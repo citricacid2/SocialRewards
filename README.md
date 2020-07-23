@@ -5,6 +5,7 @@ Design to create an API interface between social media and a custom reward syste
 ## API info
 Link API resources
 ### Twitter API info
-* demo
+* [Twitter Docs](https://developer.twitter.com/en/docs)
+* [Python Twitter Wrapper!!!](https://github.com/bear/python-twitter)
 ### Instagram API info
 * demo
