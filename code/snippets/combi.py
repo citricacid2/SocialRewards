@@ -6,7 +6,7 @@ import spotipy.util as util
 
 scope = 'user-library-read user-modify-playback-state'
 
-username='APPs'
+username = 'APPs'
 
 token = util.prompt_for_user_token(
     username,
@@ -15,6 +15,7 @@ token = util.prompt_for_user_token(
     client_secret=spotifytokens['client_secret'],
     redirect_uri='https://www.example.com'
 )
+sp = spotipy.Spotify(auth=token)
 
 auth = tweepy.OAuthHandler(tokens["consumer_key"], tokens["consumer_secret"])
 
@@ -35,10 +36,6 @@ secret = auth.access_token_secret
 auth = tweepy.OAuthHandler(tokens["consumer_key"], tokens["consumer_secret"])
 auth.set_access_token(key, secret)
 api = tweepy.API(auth)
-for i in api.mentions_timeline():
-    text = i.text[len(api.me().screen_name) + 2:]
-    if text.startswith('redeem'):
-        pass
 
 
 class MyStreamListener(tweepy.StreamListener):
@@ -46,10 +43,10 @@ class MyStreamListener(tweepy.StreamListener):
     def on_status(self, status):
         wordlist = status.text.split()
         if wordlist[1] == 'redeem':
-            print('redeeming')
+            query = ' '.join(wordlist[2:])
+            print(f'redeeming {query}')
             if token:
-                sp = spotipy.Spotify(auth=token)
-                sp.start_playback(uris=['spotify:track:5rqQTEIVK2PTuXU9GI2wT0'])
+                sp.start_playback(uris=[sp.search(query)['tracks']['items'][0]['uri']])
 
 
 myStreamListener = MyStreamListener()
